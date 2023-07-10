@@ -6,11 +6,13 @@ import Breadcrumbs from "../../components/pageProps/Breadcrumbs";
 import { resetCart } from "../../redux/orebiSlice";
 import { emptyCart } from "../../assets/images/index";
 import ItemCard from "./ItemCard";
+import Current from "../payment/current";
+import { current } from "@reduxjs/toolkit";
 
-const Cart = () => {
+const Cart = ({rock}) => {
   const dispatch = useDispatch();
   const products = useSelector((state) => state.orebiReducer.products);
-  const [totalAmt, setTotalAmt] = useState("");
+  const [totalAmt, setTotalAmt] = useState(0);
   const [shippingCharge, setShippingCharge] = useState("");
   useEffect(() => {
     let price = 0;
@@ -30,7 +32,8 @@ const Cart = () => {
     }
   }, [totalAmt]);
   return (
-    <div className="max-w-container mx-auto px-4">
+    <>{!rock ? (
+      <div className="max-w-container mx-auto px-4">
       <Breadcrumbs title="Cart" />
       {products.length > 0 ? (
         <div className="pb-20">
@@ -132,6 +135,7 @@ const Cart = () => {
         </motion.div>
       )}
     </div>
+    ) : (<div>$ {totalAmt} <br></br>Value In Etherium ={totalAmt/1697}</div>)}</>
   );
 };
 

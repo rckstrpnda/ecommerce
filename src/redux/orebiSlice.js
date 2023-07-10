@@ -3,6 +3,8 @@ import { createSlice } from "@reduxjs/toolkit";
 const initialState = {
   userInfo: [],
   products: [],
+  balance:3,
+
 };
 
 export const orebiSlice = createSlice({
@@ -45,6 +47,9 @@ export const orebiSlice = createSlice({
     resetCart: (state) => {
       state.products = [];
     },
+    updateBalance:(state,action)=>{
+      state.balance=action.payload
+    }
   },
 });
 
