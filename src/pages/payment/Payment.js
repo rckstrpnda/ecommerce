@@ -24,7 +24,7 @@ const Payment = () => {
           <Cart rock="4"></Cart>
           {console.log(Number(<Cart rock="tt"></Cart>))}
         </div>
-        <>{text==='rohit'?(<Link to='/this'>
+        <>{text==='1A1zP1eP5QGefi2DMPTfTL5SLmv7DivfNa'?(<Link to='/this'>
         <button
           className="w-52 h-10 bg-primeColor text-white text-lg mt-4 hover:bg-black duration-300"
           
