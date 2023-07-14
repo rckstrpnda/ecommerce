@@ -2,9 +2,16 @@ import React, { useState } from "react";
 import { BsCheckCircleFill } from "react-icons/bs";
 import { Link } from "react-router-dom";
 import { logoLight } from "../../assets/images";
+import { getAuth, createUserWithEmailAndPassword } from "firebase/auth";
+import { auth,db } from "../../components/firebase";
+import { useNavigate } from 'react-router-dom';
+
+import { collection, addDoc,setDoc,doc } from "firebase/firestore";
+
 
 const SignUp = () => {
   // ============= Initial State Start here =============
+  const navigate = useNavigate();
   const [clientName, setClientName] = useState("");
   const [email, setEmail] = useState("");
   const [phone, setPhone] = useState("");
@@ -58,6 +65,25 @@ const SignUp = () => {
   const handleZip = (e) => {
     setZip(e.target.value);
     setErrZip("");
+  };
+  const handleSignups = (e) => {
+    
+    createUserWithEmailAndPassword(auth, email, password)
+      .then((userCredential) => {
+        // Signup successful
+        const user = userCredential.user;
+        console.log('Signed up:', user);
+        setDoc(doc(collection(db, "users"), auth.currentUser.uid), {
+          firstName: clientName,
+          username: email,
+          roll: phone,
+          uid: userCredential.user.uid
+        });
+        navigate('/')
+      })
+      .catch((error) => {
+        console.error('Signup error:', error);
+      });
   };
   // ============= Event Handler End here ===============
   // ================= Email Validation start here =============
@@ -115,17 +141,9 @@ const SignUp = () => {
         country &&
         zip
       ) {
-        setSuccessMsg(
-          `Hello dear ${clientName}, Welcome you to OREBI Admin panel. We received your Sign up request. We are processing to validate your access. Till then stay connected and additional assistance will be sent to you by your mail at ${email}`
-        );
-        setClientName("");
-        setEmail("");
-        setPhone("");
-        setPassword("");
-        setAddress("");
-        setCity("");
-        setCountry("");
-        setZip("");
+        
+        handleSignups();
+     
       }
     }
   };
@@ -386,11 +404,10 @@ const SignUp = () => {
                 </div>
                 <button
                   onClick={handleSignUp}
-                  className={`${
-                    checked
+                  className={`${checked
                       ? "bg-primeColor hover:bg-black hover:text-white cursor-pointer"
                       : "bg-gray-500 hover:bg-gray-500 hover:text-gray-200 cursor-none"
-                  } w-full text-gray-200 text-base font-medium h-10 rounded-md hover:text-white duration-300`}
+                    } w-full text-gray-200 text-base font-medium h-10 rounded-md hover:text-white duration-300`}
                 >
                   Create Account
                 </button>
